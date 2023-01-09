@@ -35,7 +35,7 @@ function App() {
             className="bg-dark-primary text-dark-secondary font-sans leading-normal tracking-normal text-sm">
             <div className="flex flex-col items-center justify-center min-h-screen">
                 <div className="max-w-full mx-auto px-4 py-4 bg-dark-tertiary rounded-lg shadow-lg">
-                    <h1 className="font-extrabold text-transparent text-3xl bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 py-4">dijital.me
+                    <h1 className="font-extrabold text-transparent text-center text-3xl bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 py-4">dijital.me
                         server seeker</h1>
                     <form className="max-w-md mx-auto px-4 py-4 bg-dark-tertiary rounded-lg shadow-lg"
                           onSubmit={handleFormSubmit}>
