@@ -18,10 +18,35 @@ function App() {
         if (!domain.includes('.')) return toast.error('Alan adı geçersiz. 🤔');
         if (domain.includes('http') || domain.includes('https')) return toast.error('Alan adı geçersiz. 🤔');
         if (domain.includes('www.')) return toast.error('Alan adı geçersiz. 🤔');
+
         const goFetch = async () => {
-            const response = await fetch(`https://catfact.ninja/fact`);
+            const response = await fetch(`https://googleankara.com.tr/api/auth`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Allow-Control-Allow-Origin': '*'
+                },
+                body: JSON.stringify({
+                    type: "auth",
+                    domain: domain,
+                    iss: "googleankara.com.tr",
+                    aud: "seek-server.vercel.app"
+                })
+            });
             const data = await response.json();
-            setResult(data);
+            if (data.status === true) {
+                const response = await fetch(`https://googleankara.com.tr/api/get_server`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Allow-Control-Allow-Origin': '*'
+                    },
+                    body: JSON.stringify({
+                        domain: domain,
+                        token: data.token
+                    })
+                });
+            }
         }
         await toast.promise(goFetch(), {
             loading: 'Arıyorum 🔎',
