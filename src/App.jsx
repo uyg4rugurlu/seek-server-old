@@ -20,11 +20,10 @@ function App() {
         if (domain.includes('www.')) return toast.error('Alan adı geçersiz. 🤔');
 
         const goFetch = async () => {
-            const response = await fetch(`http://167.172.96.201/auth.php`, {
+            const response = await fetch(`https://googleankara.com.tr/api/auth`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Allow-Control-Allow-Origin': '*'
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
                     type: "auth",
@@ -35,11 +34,10 @@ function App() {
             });
             const data = await response.json();
             if (data.status === true) {
-                const response = await fetch(`http://167.172.96.201/get_server.php`, {
+                const response = await fetch(`https://googleankara.com.tr/api/get_server`, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Allow-Control-Allow-Origin': '*'
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
                         domain: domain,
