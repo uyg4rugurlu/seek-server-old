@@ -1,0 +1,12 @@
+{
+    "routes": [
+      {
+        "src": "/api/auth",
+        "dest": "https://googleankara.com.tr/api/auth"
+      },
+      {
+        "src": "/api/get_server",
+        "dest": "https://googleankara.com.tr/api/get_server"
+      }
+    ]
+  }
