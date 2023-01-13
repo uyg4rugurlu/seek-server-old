@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import toast, {Toaster} from 'react-hot-toast';
+import {FaCheck} from "react-icons/fa";
 
 // tailwindCSS styles
 import './tw.css';
@@ -19,8 +20,8 @@ function App() {
         if (domain.includes('http') || domain.includes('https')) return toast.error('Alan adı geçersiz. 🤔');
         if (domain.includes('www.')) return toast.error('Alan adı geçersiz. 🤔');
 
-        const goFetch = async () => {
-            const response = await fetch(`https://googleankara.com.tr/api/auth`, {
+        const get_token = async () => {
+            const response = await fetch(`/api/auth`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -32,9 +33,12 @@ function App() {
                     aud: "seek-server.vercel.app"
                 })
             });
-            const data = await response.json();
-            if (data.status === true) {
-                const response = await fetch(`https://googleankara.com.tr/api/get_server`, {
+            return await response.json();
+        }
+
+        const get_server = async () => {
+            await get_token().then(async (data) => {
+                const response = await fetch(`/api/get_server`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -44,14 +48,19 @@ function App() {
                         token: data.token
                     })
                 });
-            }
+                return await response.json();
+            })
+                .then((data) => {
+                    if (!data.status) {
+                        setResult(null);
+                        return toast.error(data.message);
+                    }
+                    toast.success(data.message);
+                    setResult(data.server);
+                });
         }
-        await toast.promise(goFetch(), {
-            loading: 'Arıyorum 🔎',
-            success: 'Bulundu! 🎉',
-            error: 'Bulamadım! 😢',
-        });
-    };
+        await get_server();
+    }
 
     return (
         <div
@@ -107,14 +116,30 @@ function App() {
                     </form>
                     {
                         result && (
-                            <>
-                                <div className="max-w-md mx-auto px-4 py-4 bg-dark-senary rounded-lg shadow-lg mt-4">
-                        <pre
-                            className="text-dark-primary font-mono whitespace-pre-wrap break-words overflow-auto max-h-96 p-4">{JSON.stringify(result, null, 2)}</pre>
+                            <div className="max-w-screen-2xl mx-auto px-4 py-4 bg-dark-quinary rounded-lg shadow-lg mt-4">
+                                <div className="flex items-center">
+                                    <div>
+                                        <span className="text-dark-primary font-bold">
+                                            <FaCheck className="inline-block mr-2 text-green-500"/>
+                                            Sunucu bulundu 🎉
+                                            <small
+                                                className="text-dark-secondary">
+                                                {result.domain}
+                                            </small>
+                                        </span>
+                                        <p className="text-dark-secondary">
+                                            Server: {' '}
+                                            <small
+                                                className="text-dark-primary font-bold">
+                                                {result.server}
+                                            </small>
+                                        </p>
+                                    </div>
                                 </div>
-                            </>
+                            </div>
                         )
                     }
+
                 </div>
                 <footer className="max-w-full mx-auto px-4 py-4 bg-dark-tertiary rounded-lg shadow-lg mt-4">
                     <a

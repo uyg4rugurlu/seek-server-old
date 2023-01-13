@@ -1,8 +1,9 @@
 {
   "name": "basic-server-checker",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.3.3",
   "type": "module",
+  "proxy": "https://googleankara.com.tr",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -11,7 +12,8 @@
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-hot-toast": "^2.4.0"
+    "react-hot-toast": "^2.4.0",
+    "react-icons": "^4.7.1"
   },
   "devDependencies": {
     "@types/react": "^18.0.26",
